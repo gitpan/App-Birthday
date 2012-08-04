@@ -1,5 +1,5 @@
 {
-   "abstract" : "Send mails due to a F<birthday.json> file and a given",
+   "abstract" : "sends birthday e-mails to your friends, on their anniversary date.",
    "author" : [
       "Farhad Fouladi <farhad@cpan.org>"
    ],
@@ -40,5 +40,5 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.1"
+   "version" : "0.2"
 }

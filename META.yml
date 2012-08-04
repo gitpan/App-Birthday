@@ -1,5 +1,5 @@
 ---
-abstract: 'Send mails due to a F<birthday.json> file and a given'
+abstract: 'sends birthday e-mails to your friends, on their anniversary date.'
 author:
   - 'Farhad Fouladi <farhad@cpan.org>'
 build_requires:
@@ -22,4 +22,4 @@ requires:
   JSON::PP: 0
   Mail::Sender: 0
   Test::More: 0
-version: 0.1
+version: 0.2

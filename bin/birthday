@@ -125,17 +125,16 @@ then at 16.9 (16th Sept.) following mails will be sent:
     bob -> ted      # reminder mail - carol has birthday
     bob -> bob      # copy of congratulation mail - bob email in F<configuration.json>
 
-If word B<others> as his/hers only friend in the array inserted, all
-users minus current users (birthday person) in input file, will be
-sent an email. For example in above file, following reminder e-mails
-will be sent at 5th of Dec.:
+If word B<others> as his/her only friend is inserted, all
+users minus birthday person in input file, will receive an reminder email. For
+example in above file, following reminder e-mails will be sent at 5th of Dec.:
 
     bob -> ted
     bob -> carol
 
-The option I<-x> will send to all your friends e-mail without
-consideration to vaulke of "date". It can be for example used for 'xmas'
-congratulations or an invitation.
+The option I<-x> will send to all your friends e-mails without
+consideration to value of the "date" (their birthday). It can be for example
+used for 'xmas' congratulations or an invitation.
 
 =head2 Configuration Format
 

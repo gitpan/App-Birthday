@@ -3,7 +3,7 @@ our @EXPORT = qw/usage version send_mails/;# Symbols to autoexport (:DEFAULT tag
 use base qw/Exporter/;
 use Mail::Sender;
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 sub send_mails {
     my ($name, $in_hr, $cfg_hr, $in_file) = @_;
@@ -54,8 +54,7 @@ __END__
 
 =head1 NAME
 
-App::Birthday - Send mails due to a F<birthday.json> file and a given
-configuration file.
+App::Birthday - sends birthday e-mails to your friends, on their anniversary date.
 
 This module is the helper library for `birthday`. No user-serviceable
 parts inside. Use `birthday` only.
@@ -64,7 +63,7 @@ For a complete documentation of `birthday`, see its POD.
 
 =head1 VERSION
 
-Version 0.1
+Version 0.2
 
 =cut
 
