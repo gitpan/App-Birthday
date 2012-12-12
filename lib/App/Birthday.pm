@@ -1,9 +1,9 @@
 package App::Birthday;
-our @EXPORT = qw/usage version send_mails/;# Symbols to autoexport (:DEFAULT tag)
+our @EXPORT = qw/usage version send_mails verify_mails/;# Symbols to autoexport (:DEFAULT tag)
 use base qw/Exporter/;
 use Mail::Sender;
 
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 
 sub send_mails {
     my ($name, $in_hr, $cfg_hr, $in_file) = @_;
@@ -47,6 +47,38 @@ sub send_mails {
         });
 }
 
+sub verify_mails {
+    my ($name, $in_hr, $cfg_hr, $in_file) = @_;
+    my @to      = ();
+    my $me      = $$cfg_hr{maintainer};
+    my $subject = $in_file.' config file. You sent a birtday mail for: '; # subject only for maintainer
+    # send E-Mail to all friends of birthday child
+    if (${$$in_hr{$name}{friends}{names}}[0] == "others"){
+        push @to, $$in_hr{$_}{email}.',' for (grep { $_ ne $name } keys %$in_hr); # all - name
+    } else {
+        push @to, $$in_hr{$_}{email}.',' for (@{$in_hr{$$in_hr{$name}{friends}{names}}});
+    }
+
+    print "[*] Configuration:\n";
+    printf "\t [-] smtp: %s\n", $$cfg_hr{transport}{host};
+    printf "\t [-] port: %s\n", $$cfg_hr{transport}{port};
+    printf "\t [-] from: %s\n", $$cfg_hr{from};
+
+    print "[*] Mail to birthday child:\n";
+    printf "\t [-] to: %s\n", $$in_hr{$name}{email};
+    printf "\t [-] subject: %s\n", $$in_hr{$name}{subject};
+    printf "\t [-] msg: %s\n", $$in_hr{$name}{text};
+
+    print "[*] Mail to friends:\n";
+    printf "\t [-] to: %s\n", "@to";
+    printf "\t [-] subject: %s\n", $$in_hr{$name}{friends}{subject};
+
+    print "[*] Reminder Mail to me:\n";
+    printf "\t [-] to: %s\n", $me;
+    printf "\t [-] subject: %s\n", $subject.$$in_hr{$name}{email};
+    printf "\t [-] msg: %s\n", $$in_hr{$name}{text};
+}
+
 sub usage { system("perldoc $0"); exit 0; }
 sub version { print "Version: $VERSION\n"; exit 0; }
 1; # End of App::Birthday
@@ -63,7 +95,7 @@ For a complete documentation of `birthday`, see its POD.
 
 =head1 VERSION
 
-Version 0.2
+Version 0.3
 
 =cut
 
@@ -81,7 +113,15 @@ usage version send_mails
 
 =head2 send_mails
 
-Main function, send mail due to a F<birthday.json> file and a given configuration file
+Main function, send mail due to a F<birthday.json> file and a given
+configuration file
+
+=cut
+
+=head2 verify_mails
+
+It verifies configuration and input entries. It sends no mail but prints
+all output to STDOUT.
 
 =cut
 

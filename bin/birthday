@@ -8,7 +8,7 @@ use JSON::PP;
 use autodie;
 use App::Birthday;
 
-getopts('hxvi:c:', \ my %opt) or usage();
+getopts('yhxvi:c:', \ my %opt) or usage();
 usage()   if $opt{h};
 version() if $opt{v};
 my $today = sprintf("%d.%d", sub {($_[3], $_[4]+1)}->(localtime));#5.2
@@ -36,7 +36,11 @@ my $conf_hr  = $json->decode( $conf );
 
 for (keys %$input_hr) {
     if ($$input_hr{$_}{date} == $today or $opt{x}) {
-        send_mails( $_, $input_hr, $conf_hr, $opt{i} );
+        if ($opt{y}){
+            verify_mails( $_, $input_hr, $conf_hr, $opt{i} );
+        } else {
+            send_mails( $_, $input_hr, $conf_hr, $opt{i} );
+        }
     }
 }
 
@@ -57,6 +61,7 @@ B<birthday> <option>
    -i <file> : user defined input file, default "birthday.json"
    -c <file> : user defined configuration file, default "config.json"
    -x        : send to all users in "config.file", no date verification
+   -y        : verify configuration and input - no mail will be sent
 
 =head1 DESCRIPTION
 
@@ -79,6 +84,10 @@ Additionally you need a configuration file for your e-mail system. This
 file is also in JSON format and default is F<configuration.json>, in the
 same directory as script. The file format is described below. Any other
 file can be selected using option I<-c>.
+
+To verify the configuration and input file use I<-y>. Here it prints all
+mails and configuration to STDOUT instead of sending them per mail. It
+is useful for testing and validation.
 
 =head2 Input Format
 
@@ -150,7 +159,7 @@ The format of configuration file can be best described by an example.
     }
 
 Maintainer will receive an e-mail reminder, that he sent a
-birthday e-mail. 
+birthday e-mail.
 
 For example in above example Bob receive a copy of birthday e-mails at
 his "bob@myhome.com".
@@ -176,6 +185,10 @@ birthday -x -i somewhere/xmas.json
 =item * send immediately to all users Xmas congratulation, use not defalut config file
 
 birthday -x -i xmas.json -c home_config.json
+
+=item * send no mails - only simulates and prints out
+
+birthday -y -i xmas.json -c home_config.json
 
 =back
 
